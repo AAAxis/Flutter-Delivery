@@ -50,42 +50,55 @@ class _RegisterScreenState extends State<RegisterScreen> {
   {
     if(imageXFile == null)
     {
-          showDialog (
+      showDialog(
           context: context,
-          builder: (c) {
-          return ErrorDialog(
-          message: "Please select an image!",);
-        }
+          builder: (c)
+          {
+            return ErrorDialog(
+              message: "Please select an image.",
+            );
+          }
       );
-
-    } if(passwordController.text.isNotEmpty && emailController.text.isNotEmpty && phoneController.text.isNotEmpty)
+    }
+    else
+    {
+      if(emailController.text.isNotEmpty && nameController.text.isNotEmpty && passwordController.text.isNotEmpty && phoneController.text.isNotEmpty)
       {
-          ///start upload image
+        //start uploading image
         showDialog(
             context: context,
-            builder: (c) {
+            builder: (c)
+            {
               return LoadingDialog(
-                  message: "Registering Account ",);
-            });
-            String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-            fStorage.Reference reference = fStorage.FirebaseStorage.instance.ref().child("riders").child(fileName);
-            fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
-            fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
-            await taskSnapshot.ref.getDownloadURL().then((url) {
-              riderImageUrl = url; });
+                message: "Registering Account",
+              );
+            }
+        );
 
-            ///save info to firestore
-            authenticateSellerAndSignUp();
-      } else
-        {
-            showDialog (
+        String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+        fStorage.Reference reference = fStorage.FirebaseStorage.instance.ref().child("riders").child(fileName);
+        fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
+        fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+        await taskSnapshot.ref.getDownloadURL().then((url) {
+          riderImageUrl = url;
+
+          //save info to firestore
+          authenticateSellerAndSignUp();
+        });
+      }
+      else
+      {
+        showDialog(
             context: context,
-            builder: (c) {
-            return ErrorDialog(
-            message: "Please fill required information!",);
-             }
-            );
-        }
+            builder: (c)
+            {
+              return ErrorDialog(
+                message: "Please fill all information!",
+              );
+            }
+        );
+      }
+    }
   }
 
 

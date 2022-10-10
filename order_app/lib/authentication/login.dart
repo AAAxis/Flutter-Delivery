@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen>
         await sharedPreferences!.setString("UID", currentUser.uid);
         await sharedPreferences!.setString("email", snapshot.data()!["email"]);
         await sharedPreferences!.setString("name", snapshot.data()!["name"]);
-        await sharedPreferences!.setString("photoUrl", snapshot.data()!["photoUrl"]);
+        await sharedPreferences!.setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
 
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
