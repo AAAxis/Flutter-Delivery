@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seller_app/authentication/auth_screen.dart';
 import 'package:seller_app/global/global.dart';
+import 'package:seller_app/uploadsScreens/menus_upload_screen.dart';
 import 'package:seller_app/widgets/my_drawer.dart';
 
 
@@ -39,6 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.post_add, color: Colors.white,),
+            onPressed: ()
+            {
+              Navigator.push(context, MaterialPageRoute(builder: (c)=> const MenusUploadScreen()));
+            },
+          ),
+        ],
       ),
       body: Center(
 
