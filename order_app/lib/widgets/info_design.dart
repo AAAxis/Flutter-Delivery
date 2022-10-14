@@ -41,7 +41,7 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
               Text(
                 widget.model!.sellerName!,
                 style: const TextStyle(
-                  color: Colors.cyan,
+                  color: Colors.black,
                   fontSize: 20,
                   fontFamily: "Train",
                 ),

@@ -5,11 +5,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:order_app/authentication/auth_screen.dart';
 import 'package:order_app/global/global.dart';
 import 'package:order_app/models/sellers.dart';
-import 'package:order_app/widgets/info_design.dart';
-
-import 'package:order_app/widgets/my_drawer.dart';
-
-import 'package:order_app/global/global.dart';
+import 'package:order_app/widgets/sellers_design.dart';
 import 'package:order_app/widgets/my_drawer.dart';
 import 'package:order_app/widgets/progress.dart';
 
@@ -36,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen>
     "slider/6.jpg",
     "slider/7.jpg",
 
-
   ];
 
   @override
@@ -57,8 +52,9 @@ class _HomeScreenState extends State<HomeScreen>
               )
           ),
         ),
-        title: Text(
-          sharedPreferences!.getString("name")!,
+        title: const Text(
+          "Dominos Pizza",
+
         ),
         centerTitle: true,
       ),
@@ -80,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen>
                     enableInfiniteScroll: true,
                     reverse: false,
                     autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 3),
+                    autoPlayInterval: const Duration(seconds: 2),
                     autoPlayAnimationDuration: const Duration(milliseconds: 500),
                     autoPlayCurve: Curves.decelerate,
                     enlargeCenterPage: true,
@@ -91,7 +87,9 @@ class _HomeScreenState extends State<HomeScreen>
                       return Container(
                         width: MediaQuery.of(context).size.width,
                         margin: const EdgeInsets.symmetric(horizontal: 1.0),
-
+                        decoration: const BoxDecoration(
+                          color: Colors.grey,
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Image.asset(
@@ -123,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen>
                       snapshot.data!.docs[index].data()! as Map<String, dynamic>
                   );
                   //design for display sellers-cafes-restuarents
-                  return InfoDesignWidget(
+                  return SellersDesignWidget(
                     model: sModel,
                     context: context,
                   );

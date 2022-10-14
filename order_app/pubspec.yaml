@@ -44,6 +44,7 @@ dependencies:
   firebase_storage: ^10.3.11
   image_picker: ^0.8.6
   carousel_slider: ^4.1.1
+  number_inc_dec: ^0.8.0
 
 
 dev_dependencies:

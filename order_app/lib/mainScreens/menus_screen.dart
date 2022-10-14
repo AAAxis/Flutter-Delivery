@@ -1,28 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:seller_app/authentication/auth_screen.dart';
-import 'package:seller_app/global/global.dart';
-import 'package:seller_app/model/menus.dart';
-import 'package:seller_app/uploadScreens/menus_upload_screen.dart';
-import 'package:seller_app/uploadScreens/menus_upload_screen.dart';
-import 'package:seller_app/widgets/info_design.dart';
-import 'package:seller_app/widgets/my_drawer.dart';
-import 'package:seller_app/widgets/progress.dart';
-import 'package:seller_app/widgets/text_widget_header.dart';
+import 'package:order_app/global/global.dart';
+import 'package:order_app/models/menus.dart';
+import 'package:order_app/models/sellers.dart';
+import 'package:order_app/widgets/menus_design.dart';
+import 'package:order_app/widgets/sellers_design.dart';
+import 'package:order_app/widgets/my_drawer.dart';
+import 'package:order_app/widgets/progress.dart';
+import 'package:order_app/widgets/text_widget_header.dart';
 
 
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class MenusScreen extends StatefulWidget
+{
+  final Sellers? model;
+  MenusScreen({this.model});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _MenusScreenState createState() => _MenusScreenState();
 }
 
 
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MenusScreenState extends State<MenusScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,29 +42,23 @@ class _HomeScreenState extends State<HomeScreen> {
               )
           ),
         ),
-        title: Text(
-          sharedPreferences!.getString("name")!,
+        title: const Text(
+          "Dominos Pizza",
+
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.post_add, color: Colors.white,),
-            onPressed: ()
-            {
-              Navigator.push(context, MaterialPageRoute(builder: (c)=> const MenusUploadScreen()));
-            },
-          ),
-        ],
       ),
       body: CustomScrollView(
         slivers: [
-          SliverPersistentHeader(pinned: true, delegate: TextWidgetHeader(title: "My Menu")),
+          SliverPersistentHeader(pinned: true, delegate: TextWidgetHeader(title: widget.model!.sellerName.toString() + " Menu")),
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection("sellers")
-                .doc(sharedPreferences!.getString("uid"))
-                .collection("menus").snapshots(),
+                .doc(widget.model!.sellerUID)
+                .collection("menus")
+                .orderBy("publishedDate", descending: true)
+                .snapshots(),
             builder: (context, snapshot)
             {
               return !snapshot.hasData
@@ -79,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Menus model = Menus.fromJson(
                     snapshot.data!.docs[index].data()! as Map<String, dynamic>,
                   );
-                  return InfoDesignWidget(
+                  return MenusDesignWidget(
                     model: model,
                     context: context,
                   );
