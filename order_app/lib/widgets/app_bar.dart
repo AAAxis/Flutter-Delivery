@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:order_app/assistantMethods/cart_Item_counter.dart';
 import 'package:order_app/main.dart';
+import 'package:provider/provider.dart';
 
 
 class MyAppBar extends StatefulWidget with PreferredSizeWidget
@@ -23,8 +25,8 @@ class _MyAppBarState extends State<MyAppBar>
         decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.blue,
-                Colors.blue,
+                Colors.cyan,
+                Colors.amber,
               ],
               begin:  FractionalOffset(0.0, 0.0),
               end:  FractionalOffset(1.0, 0.0),
@@ -41,7 +43,8 @@ class _MyAppBarState extends State<MyAppBar>
         },
       ),
       title: const Text(
-        "Dominos Pizza",
+        "iFood",
+        style: TextStyle(fontSize: 45, fontFamily: "Signatra"),
       ),
       centerTitle: true,
       automaticallyImplyLeading: true,
@@ -49,7 +52,7 @@ class _MyAppBarState extends State<MyAppBar>
         Stack(
           children: [
             IconButton(
-              icon: const Icon(Icons.shopping_cart, color: Colors.white,),
+              icon: const Icon(Icons.shopping_cart, color: Colors.cyan,),
               onPressed: ()
               {
                 //send user to cart screen
@@ -57,17 +60,25 @@ class _MyAppBarState extends State<MyAppBar>
             ),
             Positioned(
               child: Stack(
-                children: const [
-                  Icon(
+                children: [
+                  const Icon(
                     Icons.brightness_1,
                     size: 20.0,
-                    color: Colors.amber,
+                    color: Colors.green,
                   ),
                   Positioned(
                     top: 3,
                     right: 4,
                     child: Center(
-                      child: Text("0", style: TextStyle(color: Colors.white, fontSize: 12),),
+                      child: Consumer<CartItemCounter>(
+                        builder: (context, counter, c)
+                        {
+                          return Text(
+                            counter.count.toString(),
+                            style: const TextStyle(color: Colors.white, fontSize: 12),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
