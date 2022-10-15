@@ -1,3 +1,4 @@
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -112,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 
     await firebaseAuth.createUserWithEmailAndPassword(
-        email: emailController.text.trim(), password: passwordController.text.trim(),
+      email: emailController.text.trim(), password: passwordController.text.trim(),
     ).then((auth) {
       currentUser = auth.user;
     }).catchError((error){
@@ -130,20 +131,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 
     if(currentUser != null)
-      {
-        saveDataToFileStore(currentUser!).then((value) {
-          Navigator.pop(context);
-          ///Send user to Home Page
-          Route newRoute = MaterialPageRoute(builder: (c) => HomeScreen());
-          Navigator.pushReplacement(context, newRoute);
-        });
-      }
+    {
+      saveDataToFileStore(currentUser!).then((value) {
+        Navigator.pop(context);
+        ///Send user to Home Page
+        Route newRoute = MaterialPageRoute(builder: (c) => HomeScreen());
+        Navigator.pushReplacement(context, newRoute);
+      });
+    }
   }
 
   Future saveDataToFileStore(User currentUser) async
   {
     FirebaseFirestore.instance.collection("users").doc(currentUser.uid).set({
-      "UID": currentUser.uid,
+      "uid": currentUser.uid,
       "email": currentUser.email,
       "name": nameController.text.trim(),
       "userAvatarUrl": userImageUrl,
@@ -155,7 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
     ///save data locally
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences!.setString("UID", currentUser.uid);
+    await sharedPreferences!.setString("uid", currentUser.uid);
     await sharedPreferences!.setString("email", currentUser.email.toString());
     await sharedPreferences!.setString("name", nameController.text.trim());
     await sharedPreferences!.setString("photoUrl", userImageUrl);
@@ -181,11 +182,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 backgroundColor: Colors.white,
                 backgroundImage: imageXFile==null ? null : FileImage(File(imageXFile!.path)),
                 child: imageXFile == null
-                  ?
-                    Icon(Icons.add_photo_alternate,
-                    size: MediaQuery.of(context).size.width * 0.20,
-                    color: Colors.grey,
-                    ) : null,
+                    ?
+                Icon(Icons.add_photo_alternate,
+                  size: MediaQuery.of(context).size.width * 0.20,
+                  color: Colors.grey,
+                ) : null,
 
               ),
             ),
@@ -225,11 +226,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               style: ElevatedButton.styleFrom(
                 primary: Colors.red,
                 padding: EdgeInsets.symmetric(horizontal: 100, vertical: 20),
-            ),
+              ),
               onPressed: ()
-                {
-                  formValidation();
-                },
+              {
+                formValidation();
+              },
             ),
             const SizedBox(height: 30,),
           ],
@@ -238,4 +239,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  }
+}
+
+
+

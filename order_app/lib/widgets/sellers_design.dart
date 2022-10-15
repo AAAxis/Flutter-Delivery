@@ -46,7 +46,7 @@ class _SellersDesignWidgetState extends State<SellersDesignWidget> {
               Text(
                 widget.model!.sellerName!,
                 style: const TextStyle(
-                  color: Colors.black,
+                  color: Colors.cyan,
                   fontSize: 20,
                   fontFamily: "Train",
                 ),

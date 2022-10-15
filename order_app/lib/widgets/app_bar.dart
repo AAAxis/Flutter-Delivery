@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:order_app/assistantMethods/cart_Item_counter.dart';
 import 'package:order_app/main.dart';
+import 'package:order_app/mainScreens/cart_screen.dart';
 import 'package:provider/provider.dart';
 
 
 class MyAppBar extends StatefulWidget with PreferredSizeWidget
 {
   final PreferredSizeWidget? bottom;
-  MyAppBar({this.bottom});
+  final String? sellerUID;
+
+  MyAppBar({this.bottom, this.sellerUID});
 
   @override
   _MyAppBarState createState() => _MyAppBarState();
@@ -25,8 +28,8 @@ class _MyAppBarState extends State<MyAppBar>
         decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.cyan,
-                Colors.amber,
+                Colors.blue,
+                Colors.blue,
               ],
               begin:  FractionalOffset(0.0, 0.0),
               end:  FractionalOffset(1.0, 0.0),
@@ -43,7 +46,7 @@ class _MyAppBarState extends State<MyAppBar>
         },
       ),
       title: const Text(
-        "iFood",
+        "Order",
         style: TextStyle(fontSize: 45, fontFamily: "Signatra"),
       ),
       centerTitle: true,
@@ -52,10 +55,11 @@ class _MyAppBarState extends State<MyAppBar>
         Stack(
           children: [
             IconButton(
-              icon: const Icon(Icons.shopping_cart, color: Colors.cyan,),
+              icon: const Icon(Icons.shopping_cart, color: Colors.white,),
               onPressed: ()
               {
                 //send user to cart screen
+                Navigator.push(context, MaterialPageRoute(builder: (c)=> CartScreen(sellerUID: widget.sellerUID)));
               },
             ),
             Positioned(
@@ -64,7 +68,7 @@ class _MyAppBarState extends State<MyAppBar>
                   const Icon(
                     Icons.brightness_1,
                     size: 20.0,
-                    color: Colors.green,
+                    color: Colors.amber,
                   ),
                   Positioned(
                     top: 3,

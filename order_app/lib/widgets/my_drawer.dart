@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:order_app/authentication/auth_screen.dart';
 import 'package:order_app/global/global.dart';
+import 'package:order_app/mainScreens/address_screen.dart';
+import 'package:order_app/mainScreens/history_screen.dart';
 import 'package:order_app/mainScreens/home_screen.dart';
+import 'package:order_app/mainScreens/my_orders_screen.dart';
+import 'package:order_app/mainScreens/search_screen.dart';
 
 
 class MyDrawer extends StatelessWidget
@@ -79,7 +83,7 @@ class MyDrawer extends StatelessWidget
                   ),
                   onTap: ()
                   {
-
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> MyOrdersScreen()));
                   },
                 ),
                 const Divider(
@@ -95,7 +99,7 @@ class MyDrawer extends StatelessWidget
                   ),
                   onTap: ()
                   {
-
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> HistoryScreen()));
                   },
                 ),
                 const Divider(
@@ -111,7 +115,7 @@ class MyDrawer extends StatelessWidget
                   ),
                   onTap: ()
                   {
-
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> SearchScreen()));
                   },
                 ),
                 const Divider(
@@ -122,12 +126,12 @@ class MyDrawer extends StatelessWidget
                 ListTile(
                   leading: const Icon(Icons.add_location, color: Colors.black,),
                   title: const Text(
-                    "Add New Address",
+                    "Add Address",
                     style: TextStyle(color: Colors.black),
                   ),
                   onTap: ()
                   {
-
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> AddressScreen()));
                   },
                 ),
                 const Divider(

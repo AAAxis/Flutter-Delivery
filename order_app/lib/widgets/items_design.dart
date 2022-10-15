@@ -47,7 +47,7 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
               Text(
                 widget.model!.title!,
                 style: const TextStyle(
-                  color: Colors.black,
+                  color: Colors.cyan,
                   fontSize: 20,
                   fontFamily: "Train",
                 ),

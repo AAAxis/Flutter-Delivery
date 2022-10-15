@@ -11,6 +11,9 @@ import 'package:order_app/widgets/loading_dialog.dart';
 import 'auth_screen.dart';
 
 
+import 'auth_screen.dart';
+
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -93,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen>
         .then((snapshot) async {
       if(snapshot.exists)
       {
-        await sharedPreferences!.setString("UID", currentUser.uid);
+        await sharedPreferences!.setString("uid", currentUser.uid);
         await sharedPreferences!.setString("email", snapshot.data()!["email"]);
         await sharedPreferences!.setString("name", snapshot.data()!["name"]);
         await sharedPreferences!.setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
@@ -135,8 +138,8 @@ class _LoginScreenState extends State<LoginScreen>
             child: Padding(
               padding: EdgeInsets.all(15),
               child: Image.asset(
-                  "images/food-delivery.png",
-                  height: 270,
+                "images/food-delivery.png",
+                height: 270,
               ),
             ),
           ),

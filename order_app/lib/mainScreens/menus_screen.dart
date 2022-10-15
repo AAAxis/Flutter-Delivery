@@ -43,7 +43,8 @@ class _MenusScreenState extends State<MenusScreen> {
           ),
         ),
         title: const Text(
-          "Dominos Pizza",
+          "Order",
+          style: TextStyle(fontSize: 45, fontFamily: "Signatra"),
 
         ),
         centerTitle: true,
