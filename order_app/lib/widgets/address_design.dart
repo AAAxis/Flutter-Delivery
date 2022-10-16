@@ -87,28 +87,20 @@ class _AddressDesignState extends State<AddressDesign>
                           TableRow(
                             children: [
                               const Text(
-                                "Flat Number: ",
+                                "Address: ",
                                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                               ),
-                              Text(widget.model!.flatNumber.toString()),
+                              Text(widget.model!.fullAddress.toString()),
                             ],
                           ),
+
                           TableRow(
                             children: [
                               const Text(
-                                "City: ",
+                                "City / Country: ",
                                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                               ),
                               Text(widget.model!.city.toString()),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              const Text(
-                                "State: ",
-                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                              ),
-                              Text(widget.model!.state.toString()),
                             ],
                           ),
 

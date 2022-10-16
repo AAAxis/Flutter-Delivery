@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:order_app/assistantMethods/assistant_methods.dart';
 import 'package:order_app/global/global.dart';
-import 'package:order_app/mainScreens/home_screen.dart';
+
+import 'home_screen.dart';
 
 
 class PlacedOrderScreen extends StatefulWidget
@@ -61,7 +62,7 @@ class _PlacedOrderScreenState extends State<PlacedOrderScreen>
       });
     });
   }
-
+  
   Future writeOrderDetailsForUser(Map<String, dynamic> data) async
   {
     await FirebaseFirestore.instance
@@ -88,8 +89,8 @@ class _PlacedOrderScreenState extends State<PlacedOrderScreen>
         decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.blue,
-                Colors.blue,
+                Colors.white,
+                Colors.white,
               ],
               begin:  FractionalOffset(0.0, 0.0),
               end:  FractionalOffset(1.0, 0.0),
@@ -101,14 +102,14 @@ class _PlacedOrderScreenState extends State<PlacedOrderScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
-            Image.asset("images/delivery.jpg"),
+            Image.asset("images/splash.jpg"),
 
             const SizedBox(height: 12,),
 
             ElevatedButton(
               child: const Text("Place Order"),
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                primary: Colors.red,
               ),
               onPressed: ()
               {

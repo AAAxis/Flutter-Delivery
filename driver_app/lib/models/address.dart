@@ -2,8 +2,8 @@ class Address
 {
   String? name;
   String? phoneNumber;
-  String? city;
   String? fullAddress;
+  String? city;
   double? lat;
   double? lng;
 
@@ -31,9 +31,8 @@ class Address
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['name'] = name;
     data['phoneNumber'] = phoneNumber;
-    data['fullAddress'] = fullAddress;
     data['city'] = city;
-
+    data['fullAddress'] = fullAddress;
     data['lat'] = lat;
     data['lng'] = lng;
 

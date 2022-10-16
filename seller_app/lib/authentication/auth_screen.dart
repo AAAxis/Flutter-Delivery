@@ -21,8 +21,8 @@ import 'package:seller_app/authentication/register.dart';
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                 colors: [
-                  Colors.blue.shade800,
-                  Colors.blue.shade800,
+                  Colors.black12,
+                  Colors.black12,
           ],
                   begin: const FractionalOffset(0.0, 0.0),
                   end: const FractionalOffset (1.0, 0.0),

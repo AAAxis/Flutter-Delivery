@@ -9,7 +9,7 @@ import 'package:order_app/models/items.dart';
 import 'package:order_app/splashScreen/splash_screen.dart';
 import 'package:order_app/widgets/app_bar.dart';
 import 'package:order_app/widgets/cart_item_design.dart';
-import 'package:order_app/widgets/progress.dart';
+import 'package:order_app/widgets/progress_bar.dart';
 import 'package:order_app/widgets/text_widget_header.dart';
 import 'package:provider/provider.dart';
 
@@ -60,8 +60,19 @@ class _CartScreenState extends State<CartScreen>
               )
           ),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: ()
+          {
+            clearCartNow(context);
+
+            Navigator.push(context, MaterialPageRoute(builder: (c)=> const MySplashScreen()));
+
+            Fluttertoast.showToast(msg: "Cart has been cleared.");
+          },
+        ),
         title: const Text(
-          "Order",
+          "iFood",
           style: TextStyle(fontSize: 45, fontFamily: "Signatra"),
         ),
         centerTitle: true,
@@ -137,13 +148,13 @@ class _CartScreenState extends State<CartScreen>
               onPressed: ()
               {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (c)=> AddressScreen(
-                          totalAmount: totalAmount.toDouble(),
-                          sellerUID: widget.sellerUID,
-                        ),
+                  context,
+                  MaterialPageRoute(
+                    builder: (c)=> AddressScreen(
+                      totalAmount: totalAmount.toDouble(),
+                      sellerUID: widget.sellerUID,
                     ),
+                  ),
                 );
               },
             ),
@@ -152,7 +163,7 @@ class _CartScreenState extends State<CartScreen>
       ),
       body: CustomScrollView(
         slivers: [
-          
+
           //overall total amount
           SliverPersistentHeader(
               pinned: true,
@@ -168,18 +179,18 @@ class _CartScreenState extends State<CartScreen>
                   child: cartProvider.count == 0
                       ? Container()
                       : Text(
-                          "Total Price = " + amountProvider.tAmount.toString(),
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight:  FontWeight.w500,
-                            ),
-                        ),
+                    "Total Price = " + amountProvider.tAmount.toString(),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight:  FontWeight.w500,
+                    ),
+                  ),
                 ),
               );
             }),
           ),
-          
+
           //display cart items with quantity number
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
@@ -193,41 +204,41 @@ class _CartScreenState extends State<CartScreen>
                   ? SliverToBoxAdapter(child: Center(child: circularProgress(),),)
                   : snapshot.data!.docs.length == 0
                   ? //startBuildingCart()
-                     Container()
+              Container()
                   : SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index)
+                delegate: SliverChildBuilderDelegate((context, index)
+                {
+                  Items model = Items.fromJson(
+                    snapshot.data!.docs[index].data()! as Map<String, dynamic>,
+                  );
+
+                  if(index == 0)
+                  {
+                    totalAmount = 0;
+                    totalAmount = totalAmount + (model.price! * separateItemQuantityList![index]);
+                  }
+                  else
+                  {
+                    totalAmount = totalAmount + (model.price! * separateItemQuantityList![index]);
+                  }
+
+                  if(snapshot.data!.docs.length - 1 == index)
+                  {
+                    WidgetsBinding.instance!.addPostFrameCallback((timeStamp)
                     {
-                      Items model = Items.fromJson(
-                        snapshot.data!.docs[index].data()! as Map<String, dynamic>,
-                      );
+                      Provider.of<TotalAmount>(context, listen: false).displayTotalAmount(totalAmount.toDouble());
+                    });
+                  }
 
-                      if(index == 0)
-                      {
-                        totalAmount = 0;
-                        totalAmount = totalAmount + (model.price! * separateItemQuantityList![index]);
-                      }
-                      else
-                      {
-                        totalAmount = totalAmount + (model.price! * separateItemQuantityList![index]);
-                      }
-
-                      if(snapshot.data!.docs.length - 1 == index)
-                      {
-                        WidgetsBinding.instance!.addPostFrameCallback((timeStamp)
-                        {
-                          Provider.of<TotalAmount>(context, listen: false).displayTotalAmount(totalAmount.toDouble());
-                        });
-                      }
-
-                      return CartItemDesign(
-                        model: model,
-                        context: context,
-                        quanNumber: separateItemQuantityList![index],
-                      );
-                    },
-                    childCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
-                  ),
-                 );
+                  return CartItemDesign(
+                    model: model,
+                    context: context,
+                    quanNumber: separateItemQuantityList![index],
+                  );
+                },
+                  childCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
+                ),
+              );
             },
           ),
         ],

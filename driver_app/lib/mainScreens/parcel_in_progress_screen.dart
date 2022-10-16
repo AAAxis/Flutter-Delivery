@@ -1,33 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:order_app/assistantMethods/assistant_methods.dart';
-import 'package:order_app/global/global.dart';
-import 'package:order_app/widgets/order_card.dart';
-import 'package:order_app/widgets/progress_bar.dart';
-import 'package:order_app/widgets/simple_app_bar.dart';
+import 'package:driver_app/assistantMethods/assistant_methods.dart';
+import 'package:driver_app/global/global.dart';
+import 'package:driver_app/widgets/order_card.dart';
+import 'package:driver_app/widgets/progress_bar.dart';
+import 'package:driver_app/widgets/simple_app_bar.dart';
 
-class MyOrdersScreen extends StatefulWidget
+
+
+class ParcelInProgressScreen extends StatefulWidget
 {
   @override
-  _MyOrdersScreenState createState() => _MyOrdersScreenState();
+  _ParcelInProgressScreenState createState() => _ParcelInProgressScreenState();
 }
 
 
 
-class _MyOrdersScreenState extends State<MyOrdersScreen>
+class _ParcelInProgressScreenState extends State<ParcelInProgressScreen>
 {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: SimpleAppBar(title: "My Orders",),
+        appBar: SimpleAppBar(title: "In Progress",),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection("users")
-              .doc(sharedPreferences!.getString("uid"))
               .collection("orders")
-              .where("status", isEqualTo: "normal")
-              .orderBy("orderTime", descending: false)
+              .where("status", isEqualTo: "picking")
+              .orderBy("orderTime", descending: true)
               .snapshots(),
           builder: (c, snapshot)
           {
@@ -41,7 +41,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen>
                       .collection("items")
                       .where("itemID", whereIn: separateOrderItemIDs((snapshot.data!.docs[index].data()! as Map<String, dynamic>) ["productIDs"]))
                       .where("orderBy", whereIn: (snapshot.data!.docs[index].data()! as Map<String, dynamic>)["uid"])
-                      .orderBy("publishedDate", descending: false)
+                      .orderBy("publishedDate", descending: true)
                       .get(),
                   builder: (c, snap)
                   {

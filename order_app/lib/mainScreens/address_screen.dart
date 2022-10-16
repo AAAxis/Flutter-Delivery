@@ -5,7 +5,7 @@ import 'package:order_app/global/global.dart';
 import 'package:order_app/mainScreens/save_address_screen.dart';
 import 'package:order_app/models/address.dart';
 import 'package:order_app/widgets/address_design.dart';
-import 'package:order_app/widgets/progress.dart';
+import 'package:order_app/widgets/progress_bar.dart';
 import 'package:order_app/widgets/simple_app_bar.dart';
 import 'package:provider/provider.dart';
 

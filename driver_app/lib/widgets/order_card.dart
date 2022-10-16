@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:order_app/mainScreens/order_details_screen.dart';
-import 'package:order_app/models/items.dart';
+import 'package:driver_app/mainScreens/order_details_screen.dart';
+import 'package:driver_app/models/items.dart';
 
 
 class OrderCard extends StatelessWidget
@@ -114,11 +114,11 @@ Widget placedOrderDesignWidget(Items model, BuildContext context, seperateQuanti
               Row(
                 children: [
                   const Text(
-                    "x ",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 14,
-                    ),
+                      "x ",
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 14,
+                      ),
                   ),
                   Expanded(
                     child: Text(

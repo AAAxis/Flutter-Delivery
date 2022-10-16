@@ -29,9 +29,7 @@ class SaveAddressScreen extends StatelessWidget
 {
   final _name = TextEditingController();
   final _phoneNumber = TextEditingController();
-  final _flatNumber = TextEditingController();
   final _city = TextEditingController();
-  final _state = TextEditingController();
   final _completeAddress = TextEditingController();
   final _locationController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -53,13 +51,10 @@ class SaveAddressScreen extends StatelessWidget
 
     Placemark pMark = placemarks![0];
 
-    String fullAddress = '${pMark.subThoroughfare} ${pMark.thoroughfare}, ${pMark.subLocality} ${pMark.locality}, ${pMark.subAdministrativeArea}, ${pMark.administrativeArea} ${pMark.postalCode}, ${pMark.country}';
-
+    String fullAddress = '${pMark.subThoroughfare} ${pMark.thoroughfare}';
     _locationController.text = fullAddress;
 
-    _flatNumber.text = '${pMark.subThoroughfare} ${pMark.thoroughfare}, ${pMark.subLocality} ${pMark.locality}';
-    _city.text = '${pMark.subAdministrativeArea}, ${pMark.administrativeArea} ${pMark.postalCode}';
-    _state.text = '${pMark.country}';
+    _city.text = '${pMark.locality}, ${pMark.country}';
     _completeAddress.text = fullAddress;
   }
 
@@ -78,10 +73,8 @@ class SaveAddressScreen extends StatelessWidget
           {
             final model = Address(
               name: _name.text.trim(),
-              state: _state.text.trim(),
-              fullAddress: _completeAddress.text.trim(),
               phoneNumber: _phoneNumber.text.trim(),
-              flatNumber: _flatNumber.text.trim(),
+              fullAddress: _completeAddress.text.trim(),
               city: _city.text.trim(),
               lat: position!.latitude,
               lng: position!.longitude,
@@ -135,17 +128,14 @@ class SaveAddressScreen extends StatelessWidget
                     hint: 'Phone Number',
                     controller: _phoneNumber,
                   ),
-                  MyTextField(
-                    hint: 'City',
-                    controller: _city,
-                  ),
-                  MyTextField(
-                    hint: 'State / Country',
-                    controller: _state,
-                  ),
+
                   MyTextField(
                     hint: 'Address Line',
-                    controller: _flatNumber,
+                    controller: _completeAddress,
+                  ),
+                  MyTextField(
+                    hint: 'City / Country',
+                    controller: _city,
                   ),
                 ],
               ),
