@@ -1,6 +1,7 @@
 import 'package:driver_app/authentication/auth_screen.dart';
 import 'package:driver_app/global/global.dart';
 import 'package:driver_app/mainScreens/home_screen.dart';
+import 'package:driver_app/mainScreens/parcel_delivering_screen.dart';
 import 'package:driver_app/mainScreens/parcel_in_progress_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -74,7 +75,7 @@ class MyDrawer extends StatelessWidget
                 ListTile(
                   leading: const Icon(Icons.reorder, color: Colors.black,),
                   title: const Text(
-                    "In Progress",
+                    "Ready to Pickup",
                     style: TextStyle(color: Colors.black),
                   ),
                   onTap: ()
@@ -89,15 +90,16 @@ class MyDrawer extends StatelessWidget
                   thickness: 2,
                 ),
                 ListTile(
-                  leading: const Icon(Icons.close, color: Colors.black,),
+                  leading: const Icon(Icons.arrow_circle_down, color: Colors.black,),
                   title: const Text(
-                    "Not Delivered",
+                    "In Progress",
                     style: TextStyle(color: Colors.black),
                   ),
                   onTap: ()
                   {
-                    ///Navigator In Progress
-                      },
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> ParcelDeliveringScreen()));
+
+                  },
                 ),
 
                 const Divider(

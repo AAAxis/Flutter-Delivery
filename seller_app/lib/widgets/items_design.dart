@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seller_app/mainScreens/item_detail_screen.dart';
 import 'package:seller_app/mainScreens/itemsScreen.dart';
 import 'package:seller_app/model/items.dart';
 import 'package:seller_app/model/menus.dart';
@@ -24,7 +25,7 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
     return InkWell(
       onTap: ()
       {
-        //Navigator.push(context, MaterialPageRoute(builder: (c)=> ItemsScreen(model: widget.model)));
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> ItemDetailsScreen(model: widget.model)));
       },
       splashColor: Colors.amber,
       child: Padding(
@@ -43,7 +44,7 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
               Text(
                 widget.model!.title!,
                 style: const TextStyle(
-                  color: Colors.black,
+                  color: Colors.cyan,
                   fontSize: 18,
                   fontFamily: "Train",
                 ),

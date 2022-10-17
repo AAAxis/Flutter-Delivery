@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:order_app/global/global.dart';
 import 'package:order_app/mainScreens/home_screen.dart';
 import 'package:order_app/widgets/custom_text_field.dart';
@@ -96,17 +97,26 @@ class _LoginScreenState extends State<LoginScreen>
         .then((snapshot) async {
       if(snapshot.exists)
       {
-        await sharedPreferences!.setString("uid", currentUser.uid);
-        await sharedPreferences!.setString("email", snapshot.data()!["email"]);
-        await sharedPreferences!.setString("name", snapshot.data()!["name"]);
-        await sharedPreferences!.setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
+        if(snapshot.data()!["status"] == "approved")
+          {
+            await sharedPreferences!.setString("uid", currentUser.uid);
+            await sharedPreferences!.setString("email", snapshot.data()!["email"]);
+            await sharedPreferences!.setString("name", snapshot.data()!["name"]);
+            await sharedPreferences!.setString("photoUrl", snapshot.data()!["userAvatarUrl"]);
 
-        List<String> userCartList = snapshot.data()!["userCart"].cast<String>();
-        await sharedPreferences!.setStringList("userCart", userCartList);
+            List<String> userCartList = snapshot.data()!["userCart"].cast<String>();
+            await sharedPreferences!.setStringList("userCart", userCartList);
 
 
-        Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+          } else
+          {
+            firebaseAuth.signOut();
+            Navigator.pop(context);
+            Fluttertoast.showToast(msg: "Admin has blocked your account. \n\nMail here: polskoydm@gmail.com");
+          }
+
       }
       else
       {

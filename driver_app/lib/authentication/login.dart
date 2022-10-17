@@ -7,6 +7,7 @@ import 'package:driver_app/mainScreens/home_screen.dart';
 import 'package:driver_app/widgets/custom_text_field.dart';
 import 'package:driver_app/widgets/error_dialog.dart';
 import 'package:driver_app/widgets/loading_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 
@@ -92,13 +93,22 @@ class _LoginScreenState extends State<LoginScreen>
         .then((snapshot) async {
           if(snapshot.exists)
           {
-            await sharedPreferences!.setString("uid", currentUser.uid);
-            await sharedPreferences!.setString("email", snapshot.data()!["riderEmail"]);
-            await sharedPreferences!.setString("name", snapshot.data()!["riderName"]);
-            await sharedPreferences!.setString("photoUrl", snapshot.data()!["riderAvatarUrl"]);
+            if(snapshot.data()!["status"] == "approved")
+              {
+                await sharedPreferences!.setString("uid", currentUser.uid);
+                await sharedPreferences!.setString("email", snapshot.data()!["riderEmail"]);
+                await sharedPreferences!.setString("name", snapshot.data()!["riderName"]);
+                await sharedPreferences!.setString("photoUrl", snapshot.data()!["riderAvatarUrl"]);
 
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+              } else
+                {
+                  firebaseAuth.signOut();
+                  Navigator.pop(context);
+                  Fluttertoast.showToast(msg: "Admin has blocked your account. \n\nMail here: polskoydm@gmail.com");
+                }
+
           }
           else
           {

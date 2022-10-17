@@ -22,12 +22,12 @@ class _ParcelInProgressScreenState extends State<ParcelInProgressScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: SimpleAppBar(title: "In Progress",),
+        appBar: SimpleAppBar(title: "Parcel In Progress",),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("orders")
+              .where("riderUID", isEqualTo: sharedPreferences!.getString("uid"))
               .where("status", isEqualTo: "picking")
-              .orderBy("orderTime", descending: true)
               .snapshots(),
           builder: (c, snapshot)
           {
@@ -40,7 +40,6 @@ class _ParcelInProgressScreenState extends State<ParcelInProgressScreen>
                   future: FirebaseFirestore.instance
                       .collection("items")
                       .where("itemID", whereIn: separateOrderItemIDs((snapshot.data!.docs[index].data()! as Map<String, dynamic>) ["productIDs"]))
-                      .where("orderBy", whereIn: (snapshot.data!.docs[index].data()! as Map<String, dynamic>)["uid"])
                       .orderBy("publishedDate", descending: true)
                       .get(),
                   builder: (c, snap)

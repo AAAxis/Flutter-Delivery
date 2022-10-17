@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen>
   Position? position;
   List<Placemark>? placeMarks;
 
-  String sellerImageUrl = "";
+  String riderImageUrl = "";
   String completeAddress = "";
 
 
@@ -105,10 +105,10 @@ class _RegisterScreenState extends State<RegisterScreen>
           fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
           fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
           await taskSnapshot.ref.getDownloadURL().then((url) {
-            sellerImageUrl = url;
+            riderImageUrl = url;
 
             //save info to firestore
-            authenticateSellerAndSignUp();
+            authenticateRiderAndSignUp();
           });
         }
         else
@@ -139,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     }
   }
 
-  void authenticateSellerAndSignUp() async
+  void authenticateRiderAndSignUp() async
   {
     User? currentUser;
 
@@ -178,7 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen>
       "riderUID": currentUser.uid,
       "riderEmail": currentUser.email,
       "riderName": nameController.text.trim(),
-      "riderAvatarUrl": sellerImageUrl,
+      "riderAvatarUrl": riderImageUrl,
       "phone": phoneController.text.trim(),
       "address": completeAddress,
       "status": "approved",
@@ -192,7 +192,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     await sharedPreferences!.setString("uid", currentUser.uid);
     await sharedPreferences!.setString("email", currentUser.email.toString());
     await sharedPreferences!.setString("name", nameController.text.trim());
-    await sharedPreferences!.setString("photoUrl", sellerImageUrl);
+    await sharedPreferences!.setString("photoUrl", riderImageUrl);
   }
 
   @override
