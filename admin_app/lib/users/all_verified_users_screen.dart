@@ -128,7 +128,7 @@ class _AllVerifiedUsersScreenState extends State<AllVerifiedUsersScreen>
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: NetworkImage(allUsers!.docs[i].get("photoUrl")),
+                            image: NetworkImage(allUsers!.docs[i].get("userAvatarUrl")),
                             fit: BoxFit.fill,
                           ),
                         ),
