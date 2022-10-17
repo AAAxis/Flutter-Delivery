@@ -122,17 +122,7 @@ class _AllBlockedSellersScreenState extends State<AllBlockedSellersScreen>
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ListTile(
-                      leading: Container(
-                        width: 65,
-                        height: 65,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: NetworkImage(allSellers!.docs[i].get("sellerAvatarUrl")),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
+
                       title: Text(
                         allSellers!.docs[i].get("sellerName"),
                       ),

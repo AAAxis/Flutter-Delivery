@@ -122,17 +122,7 @@ class _AllBlockedUsersScreenState extends State<AllBlockedUsersScreen>
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ListTile(
-                      leading: Container(
-                        width: 65,
-                        height: 65,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: NetworkImage(allUsers!.docs[i].get("photoUrl")),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
+
                       title: Text(
                         allUsers!.docs[i].get("name"),
                       ),

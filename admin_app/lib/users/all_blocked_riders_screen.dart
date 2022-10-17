@@ -122,17 +122,7 @@ class _AllBlockedRidersScreenState extends State<AllBlockedRidersScreen>
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ListTile(
-                      leading: Container(
-                        width: 65,
-                        height: 65,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: NetworkImage(allRiders!.docs[i].get("riderAvatarUrl")),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
+
                       title: Text(
                         allRiders!.docs[i].get("riderName"),
                       ),
