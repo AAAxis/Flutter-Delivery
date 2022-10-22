@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:driver_app/assistantMethods/get_current_location.dart';
 import 'package:driver_app/global/global.dart';
+import 'package:driver_app/mainScreens/home_screen.dart';
 import 'package:driver_app/maps/map_utils.dart';
 import 'package:driver_app/splashScreen/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -35,20 +36,22 @@ class ParcelDeliveringScreen extends StatefulWidget
 
 class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
 {
-  String orderTotalAmount = "";
+  String orderAmount = "";
+  String deliveryAmount="20.0";
 
   confirmParcelHasBeenDelivered(getOrderId, sellerId, purchaserId, purchaserAddress, purchaserLat, purchaserLng)
   {
-    String riderNewTotalEarningAmount = ((double.parse(previousRiderEarnings)) + (double.parse(perParcelDeliveryAmount))).toString();
+    String TotalRider = ((double.parse(riderEarnings)) + (double.parse(deliveryAmount))).toString();
+    String TotalSeller = ((double.parse(sellerEarnings)) + (double.parse(orderAmount))).toString();
 
-    FirebaseFirestore.instance
+        FirebaseFirestore.instance
         .collection("orders")
         .doc(getOrderId).update({
       "status": "ended",
       "address": completeAddress,
       "lat": position!.latitude,
       "lng": position!.longitude,
-      "earnings": perParcelDeliveryAmount, //pay per parcel delivery amount
+      "earnings": orderAmount,//pay per parcel delivery amount
     }).then((value)
     {
       FirebaseFirestore.instance
@@ -56,7 +59,7 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
           .doc(sharedPreferences!.getString("uid"))
           .update(
           {
-            "earnings": riderNewTotalEarningAmount, //total earnings amount of rider
+            "earnings": TotalRider.toString(), //total earnings amount of rider
           });
     }).then((value)
     {
@@ -65,7 +68,7 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
           .doc(widget.sellerId)
           .update(
           {
-            "earnings": (double.parse(orderTotalAmount) + (double.parse(previousEarnings))).toString(), //total earnings amount of seller
+            "earnings": TotalSeller.toString(),//total earnings amount of seller
           });
     }).then((value)
     {
@@ -83,6 +86,10 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
     Navigator.push(context, MaterialPageRoute(builder: (c)=> const MySplashScreen()));
   }
 
+
+
+
+
   getOrderTotalAmount()
   {
     FirebaseFirestore.instance
@@ -91,11 +98,35 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
         .get()
         .then((snap)
     {
-      orderTotalAmount = snap.data()!["totalAmount"].toString();
+      orderAmount = snap.data()!["totalAmount"].toString();
       widget.sellerId = snap.data()!["sellerUID"].toString();
     }).then((value)
     {
       getSellerData();
+    });
+  }
+
+
+
+  getRiderEarnings()
+  {
+    FirebaseFirestore.instance
+        .collection("riders")
+        .doc(sharedPreferences!.getString("uid"))
+        .get().then((snap)
+    {
+      riderEarnings = snap.data()!["earnings"].toString();
+    });
+  }
+
+  getPerParcelDeliveryAmount()
+  {
+    FirebaseFirestore.instance
+        .collection("perDelivery")
+        .doc("alizeb438")
+        .get().then((snap)
+    {
+      deliveryAmount = snap.data()!["amount"].toString();
     });
   }
 
@@ -106,7 +137,7 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
         .doc(widget.sellerId)
         .get().then((snap)
     {
-      previousEarnings = snap.data()!["earnings"].toString();
+      sellerEarnings = snap.data()!["earnings"].toString();
     });
   }
 
@@ -179,9 +210,6 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
               child: InkWell(
                 onTap: ()
                 {
-                  //rider location update
-                  UserLocation uLocation = UserLocation();
-                  uLocation.getCurrentLocation();
 
                   //confirmed - that rider has picked parcel from seller
                   confirmParcelHasBeenDelivered(
@@ -192,13 +220,15 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
                       widget.purchaserLat,
                       widget.purchaserLng
                   );
+                  //Back to HomeScreen
+                  Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
                 },
                 child: Container(
                   decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          Colors.cyan,
-                          Colors.amber,
+                          Colors.red,
+                          Colors.red,
                         ],
                         begin:  FractionalOffset(0.0, 0.0),
                         end:  FractionalOffset(1.0, 0.0),
@@ -210,7 +240,7 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
                   height: 50,
                   child: const Center(
                     child: Text(
-                      "Order has been Delivered - Confirm",
+                      "Order has been Delivered",
                       style: TextStyle(color: Colors.white, fontSize: 15.0),
                     ),
                   ),

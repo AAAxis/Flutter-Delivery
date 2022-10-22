@@ -10,7 +10,7 @@ import 'home_screen.dart';
 class PlacedOrderScreen extends StatefulWidget
 {
   String? addressID;
-  double? totalAmount;
+  String? totalAmount;
   String? sellerUID;
 
   PlacedOrderScreen({this.sellerUID, this.totalAmount, this.addressID});

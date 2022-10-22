@@ -18,7 +18,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -127,33 +126,13 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-
-  restrictBlockedRidersFromUsingApp() async
-  {
-    await FirebaseFirestore.instance.collection("rider")
-        .doc(firebaseAuth.currentUser!.uid)
-        .get().then((snapshot)
-    {
-      if(snapshot.data()!["status"] != "approved")
-      {
-        firebaseAuth.signOut();
-        Fluttertoast.showToast(msg: "You have been Blocked");
-        Navigator.push(context, MaterialPageRoute(builder: (c)=> MySplashScreen()));
-      } else
-      {
-        UserLocation uLocation = UserLocation();
-        uLocation.getCurrentLocation();
-        getPerParcelDeliveryAmount();
-        getRiderPreviousEarnings();
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    restrictBlockedRidersFromUsingApp();
 
+    UserLocation uLocation = UserLocation();
+    uLocation.getCurrentLocation();
+    getRiderPreviousEarnings();
   }
 
 
@@ -164,20 +143,11 @@ class _HomeScreenState extends State<HomeScreen>
         .doc(sharedPreferences!.getString("uid"))
         .get().then((snap)
     {
-      previousRiderEarnings = snap.data()!["earnings"].toString();
+      riderEarnings = snap.data()!["earnings"].toString();
     });
   }
 
-  getPerParcelDeliveryAmount()
-  {
-    FirebaseFirestore.instance
-        .collection("perDelivery")
-        .doc("alizeb438")
-        .get().then((snap)
-    {
-      perParcelDeliveryAmount = snap.data()!["amount"].toString();
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {

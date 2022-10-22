@@ -37,7 +37,7 @@ class _CartScreenState extends State<CartScreen>
     super.initState();
 
     totalAmount = 0;
-    Provider.of<TotalAmount>(context, listen: false).displayTotalAmount(0);
+    Provider.of<TotalAmount>(context, listen: false);
 
     separateItemQuantityList = separateItemQuantities();
   }
@@ -72,7 +72,7 @@ class _CartScreenState extends State<CartScreen>
           },
         ),
         title: const Text(
-          "iFood",
+          "Order",
           style: TextStyle(fontSize: 45, fontFamily: "Signatra"),
         ),
         centerTitle: true,
@@ -151,7 +151,7 @@ class _CartScreenState extends State<CartScreen>
                   context,
                   MaterialPageRoute(
                     builder: (c)=> AddressScreen(
-                      totalAmount: totalAmount.toDouble(),
+                      totalAmount: totalAmount.toString(),
                       sellerUID: widget.sellerUID,
                     ),
                   ),

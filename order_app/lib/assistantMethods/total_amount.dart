@@ -6,11 +6,11 @@ class TotalAmount extends ChangeNotifier
 
   double get tAmount => _totalAmount;
 
-  displayTotalAmount(double number) async
+  displayTotalAmount(number) async
   {
     _totalAmount = number;
 
-    await Future.delayed(const Duration(milliseconds: 100), ()
+    await Future.delayed(const Duration(milliseconds: 10), ()
     {
       notifyListeners();
     });

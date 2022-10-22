@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class AddressScreen extends StatefulWidget
 {
-  final double? totalAmount;
+  final String? totalAmount;
   final String? sellerUID;
 
   AddressScreen({this.totalAmount, this.sellerUID});

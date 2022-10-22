@@ -10,7 +10,6 @@ import 'package:driver_app/widgets/loading_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -37,13 +36,13 @@ class _LoginScreenState extends State<LoginScreen>
     else
     {
       showDialog(
-        context: context,
-        builder: (c)
-        {
-          return ErrorDialog(
-            message: "Please write email/password.",
-          );
-        }
+          context: context,
+          builder: (c)
+          {
+            return ErrorDialog(
+              message: "Please write email/password.",
+            );
+          }
       );
     }
   }
@@ -91,43 +90,34 @@ class _LoginScreenState extends State<LoginScreen>
         .doc(currentUser.uid)
         .get()
         .then((snapshot) async {
-          if(snapshot.exists)
-          {
-            if(snapshot.data()!["status"] == "approved")
-              {
-                await sharedPreferences!.setString("uid", currentUser.uid);
-                await sharedPreferences!.setString("email", snapshot.data()!["riderEmail"]);
-                await sharedPreferences!.setString("name", snapshot.data()!["riderName"]);
-                await sharedPreferences!.setString("photoUrl", snapshot.data()!["riderAvatarUrl"]);
+      if(snapshot.exists)
+      {
+        await sharedPreferences!.setString("uid", currentUser.uid);
+        await sharedPreferences!.setString("email", snapshot.data()!["riderEmail"]);
+        await sharedPreferences!.setString("name", snapshot.data()!["riderName"]);
+        await sharedPreferences!.setString("photoUrl", snapshot.data()!["riderAvatarUrl"]);
 
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
-              } else
-                {
-                  firebaseAuth.signOut();
-                  Navigator.pop(context);
-                  Fluttertoast.showToast(msg: "Admin has blocked your account. \n\nMail here: polskoydm@gmail.com");
-                }
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+      }
+      else
+      {
+        firebaseAuth.signOut();
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> const AuthScreen()));
 
-          }
-          else
-          {
-            firebaseAuth.signOut();
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (c)=> const AuthScreen()));
+        showDialog(
+            context: context,
+            builder: (c)
+            {
+              return ErrorDialog(
+                message: "no record exists.",
+              );
+            }
+        );
+      }
 
-            showDialog(
-                context: context,
-                builder: (c)
-                {
-                  return ErrorDialog(
-                    message: "no record exists.",
-                  );
-                }
-            );
-          }
-
-        });
+    });
   }
 
   @override
@@ -141,8 +131,8 @@ class _LoginScreenState extends State<LoginScreen>
             child: Padding(
               padding: EdgeInsets.all(15),
               child: Image.asset(
-                  "images/signup.png",
-                  height: 270,
+                "images/signup.png",
+                height: 270,
               ),
             ),
           ),
@@ -165,21 +155,20 @@ class _LoginScreenState extends State<LoginScreen>
               ],
             ),
           ),
-
-            ElevatedButton(
-              child: const Text(
-                "Sign Up",
-                style: TextStyle(color: Colors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.red,
-                padding: EdgeInsets.symmetric(horizontal: 70, vertical: 15),
-              ),
-              onPressed: ()
-              {
-                formValidation();
-              },
+          ElevatedButton(
+            child: const Text(
+              "Login",
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,),
             ),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.cyan,
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+            ),
+            onPressed: ()
+            {
+              formValidation();
+            },
+          ),
           const SizedBox(height: 30,),
         ],
       ),

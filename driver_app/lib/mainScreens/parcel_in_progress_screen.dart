@@ -26,7 +26,7 @@ class _ParcelInProgressScreenState extends State<ParcelInProgressScreen>
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("orders")
-              .where("riderUID", isEqualTo: sharedPreferences!.getString("uid"))
+              .where("riderUID", isEqualTo: sharedPreferences!.getString("riderUID"))
               .where("status", isEqualTo: "picking")
               .snapshots(),
           builder: (c, snapshot)

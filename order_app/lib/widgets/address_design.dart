@@ -11,7 +11,7 @@ class AddressDesign extends StatefulWidget
   final int? currentIndex;
   final int? value;
   final String? addressID;
-  final double? totalAmount;
+  final String? totalAmount;
   final String? sellerUID;
 
   AddressDesign({

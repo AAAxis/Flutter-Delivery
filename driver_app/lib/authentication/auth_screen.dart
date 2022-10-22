@@ -19,26 +19,26 @@ class _AuthScreenState extends State<AuthScreen> {
         appBar: AppBar(
           flexibleSpace: Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.black12,
-                  Colors.black12,
-                ],
-                begin:  FractionalOffset(0.0, 0.0),
-                end:  FractionalOffset(1.0, 0.0),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp,
-              )
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.amber,
+                    Colors.cyan,
+                  ],
+                  begin:  FractionalOffset(0.0, 0.0),
+                  end:  FractionalOffset(1.0, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp,
+                )
             ),
           ),
           automaticallyImplyLeading: false,
           title: const Text(
-              "Dominos Pizza",
+            "iFood",
             style: TextStyle(
-              fontSize: 45,
-              color: Colors.white,
-              fontFamily: "Bebas",
-              letterSpacing: 6
+                fontSize: 60,
+                color: Colors.white,
+                fontFamily: "Signatra",
+                letterSpacing: 6
             ),
           ),
           centerTitle: true,
@@ -59,14 +59,14 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
         body: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.blue,
-                Colors.blue,
-              ],
-            )
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Colors.amber,
+                  Colors.cyan,
+                ],
+              )
           ),
           child: const TabBarView(
             children: [
