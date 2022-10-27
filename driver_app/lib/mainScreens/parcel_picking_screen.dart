@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:driver_app/assistantMethods/get_current_location.dart';
 import 'package:driver_app/global/global.dart';
 import 'package:driver_app/mainScreens/parcel_delivering_screen.dart';
-import 'package:driver_app/maps/map_utils.dart';
+import 'package:driver_app/maps/maps.dart';
 import 'package:flutter/material.dart';
 
 class ParcelPickingScreen extends StatefulWidget
@@ -11,16 +11,14 @@ class ParcelPickingScreen extends StatefulWidget
   String? sellerId;
   String? getOrderID;
   String? purchaserAddress;
-  double? purchaserLat;
-  double? purchaserLng;
+
 
   ParcelPickingScreen({
     this.purchaserId,
     this.sellerId,
     this.getOrderID,
     this.purchaserAddress,
-    this.purchaserLat,
-    this.purchaserLng,
+
   });
 
   @override
@@ -31,7 +29,7 @@ class ParcelPickingScreen extends StatefulWidget
 
 class _ParcelPickingScreenState extends State<ParcelPickingScreen>
 {
-  double? sellerLat, sellerLng;
+  String sellerAddress = "";
 
   getSellerData() async
   {
@@ -41,8 +39,7 @@ class _ParcelPickingScreenState extends State<ParcelPickingScreen>
         .get()
         .then((DocumentSnapshot)
     {
-      sellerLat = DocumentSnapshot.data()!["lat"];
-      sellerLng = DocumentSnapshot.data()!["lng"];
+      sellerAddress = DocumentSnapshot.data()!["address"];
     });
   }
 
@@ -53,22 +50,18 @@ class _ParcelPickingScreenState extends State<ParcelPickingScreen>
     getSellerData();
   }
 
-  confirmParcelHasBeenPicked(getOrderId, sellerId, purchaserId, purchaserAddress, purchaserLat, purchaserLng)
+  confirmParcelHasBeenPicked(getOrderId, sellerId, purchaserId, purchaserAddress)
   {
     FirebaseFirestore.instance
         .collection("orders")
         .doc(getOrderId).update({
       "status": "delivering",
       "address": completeAddress,
-      "lat": position!.latitude,
-      "lng": position!.longitude,
     });
 
     Navigator.push(context, MaterialPageRoute(builder: (c)=> ParcelDeliveringScreen(
       purchaserId: purchaserId,
       purchaserAddress: purchaserAddress,
-      purchaserLat: purchaserLat,
-      purchaserLng: purchaserLng,
       sellerId: sellerId,
       getOrderId: getOrderId,
     )));
@@ -92,8 +85,9 @@ class _ParcelPickingScreenState extends State<ParcelPickingScreen>
           GestureDetector(
             onTap: ()
             {
+
               //show location from rider current location towards seller location
-              MapUtils.lauchMapFromSourceToDestination(position!.latitude, position!.longitude, sellerLat, sellerLng);
+              MapsUtils.openMapWithAddress(sellerAddress);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -133,17 +127,13 @@ class _ParcelPickingScreenState extends State<ParcelPickingScreen>
               child: InkWell(
                 onTap: ()
                 {
-                  UserLocation uLocation = UserLocation();
-                  uLocation.getCurrentLocation();
 
                   //confirmed - that rider has picked parcel from seller
                   confirmParcelHasBeenPicked(
                       widget.getOrderID,
                       widget.sellerId,
                       widget.purchaserId,
-                      widget.purchaserAddress,
-                      widget.purchaserLat,
-                      widget.purchaserLng
+                      widget.purchaserAddress
                   );
                 },
                 child: Container(

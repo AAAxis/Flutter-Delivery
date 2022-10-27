@@ -50,11 +50,15 @@ class _RegisterScreenState extends State<RegisterScreen>
     });
   }
 
-  getCurrentLocation() async
-  {
-    Position newPosition = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
+  Position? _position;
+
+  void _getCurrentLocation() async {
+    Position position = await _determinePosition();
+    setState(() {
+      _position = position;
+    });
+
+    Position newPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
     position = newPosition;
 
@@ -69,6 +73,23 @@ class _RegisterScreenState extends State<RegisterScreen>
 
     locationController.text = completeAddress;
   }
+
+
+  Future<Position> _determinePosition() async {
+    LocationPermission permission;
+
+    permission = await Geolocator.checkPermission();
+
+    if(permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if(permission == LocationPermission.denied) {
+        return Future.error('Location Permissions are denied');
+      }
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
 
   Future<void> formValidation() async
   {
@@ -184,8 +205,6 @@ class _RegisterScreenState extends State<RegisterScreen>
       "address": completeAddress,
       "status": "approved",
       "earnings": 0.0,
-      "lat": position!.latitude,
-      "lng": position!.longitude,
     });
 
     //save data locally
@@ -274,7 +293,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                       ),
                       onPressed: ()
                       {
-                        getCurrentLocation();
+                        _getCurrentLocation();
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.amber,

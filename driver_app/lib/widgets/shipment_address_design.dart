@@ -29,8 +29,6 @@ class ShipmentAddressDesign extends StatelessWidget
       "riderUID": sharedPreferences!.getString("uid"),
       "riderName": sharedPreferences!.getString("name"),
       "status": "picking",
-      "lat": position!.latitude,
-      "lng": position!.longitude,
       "address": completeAddress,
     });
 
@@ -38,8 +36,6 @@ class ShipmentAddressDesign extends StatelessWidget
     Navigator.push(context, MaterialPageRoute(builder: (context) => ParcelPickingScreen(
       purchaserId: purchaserId,
       purchaserAddress: model!.fullAddress,
-      purchaserLat: model!.lat,
-      purchaserLng: model!.lng,
       sellerId: sellerId,
       getOrderID: getOrderID,
     )));

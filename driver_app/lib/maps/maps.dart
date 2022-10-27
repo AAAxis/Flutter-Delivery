@@ -7,9 +7,9 @@ class MapsUtils
 
 
   //text address
-  static Future<void> openMapWithAddress(String fullAddress) async
+  static Future<void> openMapWithAddress(String sellerAddress) async
   {
-    String query = Uri.encodeComponent(fullAddress);
+    String query = Uri.encodeComponent(sellerAddress);
     String googleMapUrl = "https://www.google.com/maps/search/?api=1&query=$query";
 
     if(await launch(googleMapUrl))

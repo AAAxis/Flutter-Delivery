@@ -9,21 +9,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 
-class GeolocatorService {
-  Future<Position?> determinePosition() async {
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        return Future.error('Location Not Available');
-      }
-    } else {
-      throw Exception('Error');
-    }
-    return await Geolocator.getCurrentPosition();
-  }
-}
 
 class SaveAddressScreen extends StatelessWidget
 {
@@ -37,13 +22,36 @@ class SaveAddressScreen extends StatelessWidget
   Position? position;
 
 
-  getUserLocationAddress() async
-  {
-    Position newPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high
-    );
+  Future<Position> _determinePosition() async {
+    LocationPermission permission;
+
+    permission = await Geolocator.checkPermission();
+
+    if(permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if(permission == LocationPermission.denied) {
+        return Future.error('Location Permissions are denied');
+      }
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
+
+
+
+  void _getCurrentLocation() async {
+    Position position = await _determinePosition();
+
+
+
+    Position newPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+    LocationPermission permission = await Geolocator.requestPermission();
+
 
     position = newPosition;
+
 
     placemarks = await placemarkFromCoordinates(
         position!.latitude, position!.longitude
@@ -76,8 +84,6 @@ class SaveAddressScreen extends StatelessWidget
               phoneNumber: _phoneNumber.text.trim(),
               fullAddress: _completeAddress.text.trim(),
               city: _city.text.trim(),
-              lat: position!.latitude,
-              lng: position!.longitude,
             ).toJson();
             
             FirebaseFirestore.instance.collection("users")
@@ -155,7 +161,7 @@ class SaveAddressScreen extends StatelessWidget
               onPressed: ()
               {
                 //getCurrentLocationWithAddress
-                getUserLocationAddress();
+                _getCurrentLocation();
               },
             ),
 
@@ -165,3 +171,5 @@ class SaveAddressScreen extends StatelessWidget
     );
   }
 }
+
+

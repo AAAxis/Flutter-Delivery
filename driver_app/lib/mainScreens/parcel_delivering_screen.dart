@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:driver_app/assistantMethods/get_current_location.dart';
 import 'package:driver_app/global/global.dart';
 import 'package:driver_app/mainScreens/home_screen.dart';
-import 'package:driver_app/maps/map_utils.dart';
+import 'package:driver_app/maps/maps.dart';
 import 'package:driver_app/splashScreen/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -12,16 +12,12 @@ class ParcelDeliveringScreen extends StatefulWidget
 {
   String? purchaserId;
   String? purchaserAddress;
-  double? purchaserLat;
-  double? purchaserLng;
   String? sellerId;
   String? getOrderId;
 
   ParcelDeliveringScreen({
     this.purchaserId,
     this.purchaserAddress,
-    this.purchaserLat,
-    this.purchaserLng,
     this.sellerId,
     this.getOrderId,
   });
@@ -37,9 +33,10 @@ class ParcelDeliveringScreen extends StatefulWidget
 class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
 {
   String orderAmount = "";
-  String deliveryAmount="20.0";
+  String completeAddress = "";
+  String deliveryAmount = "20.0";
 
-  confirmParcelHasBeenDelivered(getOrderId, sellerId, purchaserId, purchaserAddress, purchaserLat, purchaserLng)
+  confirmParcelHasBeenDelivered(getOrderId, sellerId, purchaserId, purchaserAddress)
   {
     String TotalRider = ((double.parse(riderEarnings)) + (double.parse(deliveryAmount))).toString();
     String TotalSeller = ((double.parse(sellerEarnings)) + (double.parse(orderAmount))).toString();
@@ -49,8 +46,6 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
         .doc(getOrderId).update({
       "status": "ended",
       "address": completeAddress,
-      "lat": position!.latitude,
-      "lng": position!.longitude,
       "earnings": orderAmount,//pay per parcel delivery amount
     }).then((value)
     {
@@ -119,16 +114,7 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
     });
   }
 
-  getPerParcelDeliveryAmount()
-  {
-    FirebaseFirestore.instance
-        .collection("perDelivery")
-        .doc("alizeb438")
-        .get().then((snap)
-    {
-      deliveryAmount = snap.data()!["amount"].toString();
-    });
-  }
+
 
   getSellerData()
   {
@@ -170,8 +156,9 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
             onTap: ()
             {
               //show location from rider current location towards seller location
-              MapUtils.lauchMapFromSourceToDestination(position!.latitude, position!.longitude, widget.purchaserLat, widget.purchaserLng);
-            },
+
+              MapsUtils.openMapWithAddress(completeAddress);
+                  },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -216,9 +203,8 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen>
                       widget.getOrderId,
                       widget.sellerId,
                       widget.purchaserId,
-                      widget.purchaserAddress,
-                      widget.purchaserLat,
-                      widget.purchaserLng
+                      widget.purchaserAddress
+
                   );
                   //Back to HomeScreen
                   Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));

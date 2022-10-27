@@ -18,7 +18,7 @@ import 'package:seller_app/mainScreens/home_screen.dart';
       startTimer()
       {
         ///Auth Check
-        Timer(Duration(seconds: 8), () async {
+        Timer(Duration(seconds: 2), () async {
         if(firebaseAuth.currentUser != null)
          {
            Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));

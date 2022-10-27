@@ -120,9 +120,8 @@ class _AddressDesignState extends State<AddressDesign>
               ),
               onPressed: ()
               {
-                MapsUtils.openMapWithPosition(widget.model!.lat!, widget.model!.lng!);
 
-                //MapsUtils.openMapWithAddress(widget.model!.fullAddress!);
+                MapsUtils.openMapWithAddress(widget.model!.fullAddress!);
               },
             ),
 
